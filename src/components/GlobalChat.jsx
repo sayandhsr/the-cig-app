@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useUser } from '@clerk/clerk-react';
-import { withClerk } from './withClerk.jsx';
+
+import { useStore } from '@nanostores/react';
+import { $userStore } from '@clerk/astro/client';
 
 function GlobalChat() {
+  const user = useStore($userStore);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const { user } = useUser();
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -112,4 +113,4 @@ function GlobalChat() {
   );
 }
 
-export default withClerk(GlobalChat);
+export default GlobalChat;

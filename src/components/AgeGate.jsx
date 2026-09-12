@@ -2,17 +2,20 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AgeGate() {
-  const [verified, setVerified] = useState(false);
-  const [show, setShow] = useState(true);
+  const [verified, setVerified] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('age-verified') === 'true';
+    }
+    return false;
+  });
+  const [show, setShow] = useState(!verified);
 
   useEffect(() => {
-    const isVerified = localStorage.getItem('age-verified') === 'true';
-    if (isVerified) {
-      setVerified(true);
+    if (verified && show) {
       setShow(false);
       window.dispatchEvent(new Event('age-verified'));
     }
-  }, []);
+  }, [verified, show]);
 
   const handleVerify = () => {
     localStorage.setItem('age-verified', 'true');

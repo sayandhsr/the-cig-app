@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, MapPin, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useUser } from '@clerk/clerk-react';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { getBoundsOfDistance } from 'geolib';
-import { withClerk } from './withClerk.jsx';
 
 // Fix Leaflet's default icon path issues with bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -16,8 +14,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+import { useStore } from '@nanostores/react';
+import { $userStore } from '@clerk/astro/client';
+
 function SpotChat() {
-  const { user } = useUser();
+  const user = useStore($userStore);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [location, setLocation] = useState(null);
@@ -226,4 +227,4 @@ function SpotChat() {
   );
 }
 
-export default withClerk(SpotChat);
+export default SpotChat;

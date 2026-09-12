@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, MessageCircle, UserPlus, Save, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useUser } from '@clerk/clerk-react';
 import { getDistance } from 'geolib';
-import { withClerk } from './withClerk.jsx';
+
+import { useStore } from '@nanostores/react';
+import { $userStore } from '@clerk/astro/client';
 
 function SocialDiscovery() {
-  const { user } = useUser();
+  const user = useStore($userStore);
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterBrand, setFilterBrand] = useState('');
@@ -233,4 +234,4 @@ function SocialDiscovery() {
   );
 }
 
-export default withClerk(SocialDiscovery);
+export default SocialDiscovery;

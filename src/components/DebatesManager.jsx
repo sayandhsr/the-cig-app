@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Flame, MessageCircle, Plus, ChevronUp, ChevronDown, Check, X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useUser } from '@clerk/clerk-react';
-import { withClerk } from './withClerk.jsx';
+
+import { useStore } from '@nanostores/react';
+import { $userStore } from '@clerk/astro/client';
 
 function DebatesManager() {
-  const { user } = useUser();
+  const user = useStore($userStore);
   const [debates, setDebates] = useState([]);
   const [comments, setComments] = useState({});
   const [showCreate, setShowCreate] = useState(false);
@@ -316,4 +317,4 @@ function DebatesManager() {
   );
 }
 
-export default withClerk(DebatesManager);
+export default DebatesManager;

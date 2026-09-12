@@ -1,93 +1,100 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
-import { withClerk } from './withClerk.jsx';
+import { UserButton, SignInButton } from '@clerk/astro/react';
+import { useStore } from '@nanostores/react';
+import { $userStore } from '@clerk/astro/client';
 
 function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const user = useStore($userStore);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: 'DISCOVER', href: '/discover' },
-    { name: 'SPOT CHAT', href: '/spot-chat' },
-    { name: 'GLOBAL CHAT', href: '/global-chat' },
-    { name: 'DEBATES', href: '/debates' },
-    { name: 'COMMUNITY', href: '/community' },
+    { name: 'Spot Chat', href: '/spot-chat' },
+    { name: 'Global Chat', href: '/global-chat' },
+    { name: 'Debates', href: '/debates' },
+    { name: 'Discover', href: '/discover' }
   ];
 
   return (
-    <nav className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? 'bg-background/90 backdrop-blur-lg border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? 'bg-background/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="text-2xl font-display font-bold tracking-widest text-gold">KILL SWITCH</div>
-          <div className="px-1.5 py-0.5 rounded bg-red-900/50 border border-red-500/30 text-[10px] font-bold text-red-200 tracking-wider">18+</div>
-        </div>
+        <a href="/" className="text-2xl font-display font-black tracking-widest text-cream group flex items-center gap-2">
+          <span className="text-gold">KILL</span> SWITCH
+        </a>
 
-        {/* Desktop Links */}
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="text-sm font-medium tracking-widest text-cream/70 hover:text-gold transition-colors">
+            <a 
+              key={link.name}
+              href={link.href}
+              className="text-sm font-medium tracking-widest text-muted hover:text-gold transition-colors"
+            >
               {link.name}
             </a>
           ))}
+          
+          <div className="pl-8 border-l border-white/10 flex items-center gap-4">
+            {!user ? (
+              <SignInButton mode="modal">
+                <button className="px-6 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition-colors text-sm font-medium tracking-widest">
+                  SIGN IN
+                </button>
+              </SignInButton>
+            ) : (
+              <UserButton afterSignOutUrl="/" />
+            )}
+          </div>
         </div>
 
-        {/* Right side actions */}
-        <div className="hidden md:flex items-center gap-4">
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button className="text-sm font-medium tracking-widest text-cream hover:text-gold transition-colors">LOGIN</button>
-            </SignInButton>
-            <SignInButton mode="modal">
-              <button className="text-sm font-medium tracking-widest px-6 py-2 rounded-full bg-gold text-background hover:bg-gold-light transition-colors">JOIN</button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-        </div>
-
-        {/* Mobile toggle */}
-        <button className="md:hidden text-cream" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="md:hidden text-cream p-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
           {mobileMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
-      
-      {/* Mobile Menu */}
+
+      {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-surface border-b border-white/5 py-4 px-6 flex flex-col gap-4">
+        <div className="md:hidden absolute top-full left-0 w-full bg-background border-b border-white/5 p-6 flex flex-col gap-4 shadow-2xl">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="text-sm font-medium tracking-widest text-cream/70 hover:text-gold transition-colors">
+            <a 
+              key={link.name}
+              href={link.href}
+              className="text-lg font-medium tracking-widest text-cream py-2 border-b border-white/5"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               {link.name}
             </a>
           ))}
-          <div className="w-full h-px bg-white/5 my-2"></div>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button className="text-sm font-medium tracking-widest text-cream text-left">LOGIN</button>
-            </SignInButton>
-            <SignInButton mode="modal">
-              <button className="text-sm font-medium tracking-widest px-6 py-2 rounded-full bg-gold text-background text-center">JOIN</button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <div className="py-2">
+          {!user ? (
+            <div className="py-4">
+              <SignInButton mode="modal">
+                <button className="w-full px-6 py-3 rounded-lg bg-gold text-background font-bold tracking-widest">
+                  SIGN IN
+                </button>
+              </SignInButton>
+            </div>
+          ) : (
+            <div className="py-4 flex justify-center">
               <UserButton afterSignOutUrl="/" />
             </div>
-          </SignedIn>
+          )}
         </div>
       )}
     </nav>
   );
 }
 
-export default withClerk(Navigation);
+export default Navigation;
