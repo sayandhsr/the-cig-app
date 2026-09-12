@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Flame, MessageCircle } from 'lucide-react';
+---
+
+<Layout title="Debates | KILL SWITCH">
+  <div class="pt-32 pb-16 px-6 md:px-12 max-w-5xl mx-auto">
+    <div class="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
+      <div>
+        <h1 class="text-4xl font-display font-bold text-cream mb-2">Community Debates</h1>
+        <p class="text-muted">Discuss, debate, and share your perspective.</p>
+      </div>
+      <button class="px-6 py-3 rounded-full bg-gold text-background font-bold tracking-widest hover:bg-gold-light transition-colors shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+        START A DEBATE
+      </button>
+    </div>
+
+    <div class="space-y-6">
+      {[
+        { title: 'Cigarette vs Vape — What\'s your true preference?', author: 'CloudChaser', votes: 342, comments: 128, tag: 'Hot' },
+        { title: 'What is the absolute best flavor profile for an evening smoke?', author: 'FlavorHunter', votes: 215, comments: 84, tag: 'Discussion' },
+        { title: 'Classic vs modern cigarettes - has quality dropped?', author: 'OldSchool', votes: 189, comments: 156, tag: 'Debate' },
+        { title: 'Do social smoking spaces help people feel less alone?', author: 'Socialite', votes: 567, comments: 204, tag: 'Trending' }
+      ].map((debate, i) => (
+        <div class="glass-card p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-6 group hover:border-gold/30 transition-colors cursor-pointer">
+          <div class="flex sm:flex-col items-center gap-2 sm:min-w-[60px]">
+            <button class="w-10 h-10 rounded-full bg-surface border border-white/10 flex items-center justify-center text-muted hover:text-gold hover:border-gold transition-colors">
+              <Flame class="w-5 h-5" />
+            </button>
+            <span class="text-lg font-bold text-cream">{debate.votes}</span>
+          </div>
+          
+          <div class="flex-grow">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-[10px] uppercase tracking-widest px-2 py-1 bg-white/5 text-gold rounded">{debate.tag}</span>
+              <span class="text-xs text-muted">Posted by {debate.author}</span>
+            </div>
+            <h3 class="text-xl font-display font-medium text-cream group-hover:text-gold transition-colors mb-2">
+              {debate.title}
+            </h3>
+            <div class="flex items-center gap-2 text-sm text-muted">
+              <MessageCircle class="w-4 h-4" />
+              {debate.comments} comments
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>

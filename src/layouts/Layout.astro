@@ -1,0 +1,55 @@
+---
+import '../styles/global.css';
+import Navigation from '../components/Navigation.jsx';
+import Footer from '../components/Footer.astro';
+import AgeGate from '../components/AgeGate.jsx';
+import AdBanner from '../components/AdBanner.jsx';
+import { ClerkProvider } from '@clerk/astro/components';
+
+const { title = "KILL SWITCH | SMOKE. CONNECT. TALK." } = Astro.props;
+---
+
+<ClerkProvider>
+<html lang="en" class="scroll-smooth">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+	</head>
+	<body class="relative bg-background">
+		<AgeGate client:only="react" />
+		
+		<div id="main-content" class="opacity-0 transition-opacity duration-1000 flex flex-col min-h-screen">
+			<Navigation client:load />
+			
+      <div class="flex-grow flex w-full relative">
+        {/* Main Content Area */}
+        <main class="flex-grow pb-16">
+          <slot />
+        </main>
+        
+        {/* Vertical Advertisement Sidebar */}
+        <aside class="hidden xl:block w-[250px] border-l border-white/5 bg-surface/30">
+          <div class="sticky top-28 p-6">
+            <AdBanner client:load />
+          </div>
+        </aside>
+      </div>
+
+			<Footer />
+		</div>
+
+		<script>
+			// Reveal main content when age gate is passed
+			if (localStorage.getItem('age-verified') === 'true') {
+        document.getElementById('main-content').classList.remove('opacity-0');
+      } else {
+        window.addEventListener('age-verified', () => {
+          document.getElementById('main-content').classList.remove('opacity-0');
+        });
+      }
+		</script>
+	</body>
+</html>
+</ClerkProvider>
