@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { MapPin, MessageCircle, UserPlus, Save, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useUser } from '@clerk/clerk-react';
+import { getDistance } from 'geolib';
+import { withClerk } from './withClerk.jsx';
 
-export default function SocialDiscovery() {
+function SocialDiscovery() {
   const { user } = useUser();
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -88,10 +90,12 @@ export default function SocialDiscovery() {
       if (lat && lng) {
         const nearby = filtered.filter(p => {
           if (!p.latitude || !p.longitude) return false;
-          // Rough distance calculation (Pythagorean on lat/lng for short distances)
-          const latDiff = (p.latitude - lat) * 111.32;
-          const lngDiff = (p.longitude - lng) * 111.32 * Math.cos(lat * (Math.PI / 180));
-          const distKm = Math.sqrt(latDiff*latDiff + lngDiff*lngDiff);
+          // Use geolib for accurate distance calculation
+          const distMeters = getDistance(
+            { latitude: lat, longitude: lng },
+            { latitude: p.latitude, longitude: p.longitude }
+          );
+          const distKm = distMeters / 1000;
           p.distance = distKm;
           return distKm <= 50;
         });
@@ -228,3 +232,5 @@ export default function SocialDiscovery() {
     </section>
   );
 }
+
+export default withClerk(SocialDiscovery);

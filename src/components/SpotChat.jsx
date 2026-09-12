@@ -5,6 +5,8 @@ import { useUser } from '@clerk/clerk-react';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { getBoundsOfDistance } from 'geolib';
+import { withClerk } from './withClerk.jsx';
 
 // Fix Leaflet's default icon path issues with bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -14,7 +16,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-export default function SpotChat() {
+function SpotChat() {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -56,13 +58,14 @@ export default function SpotChat() {
     if (!location) return;
 
     // 2. Calculate bounding box for 15km
-    const latDiff = RADIUS_KM / 111.32;
-    const lngDiff = RADIUS_KM / (111.32 * Math.cos(location.lat * (Math.PI / 180)));
-
-    const minLat = location.lat - latDiff;
-    const maxLat = location.lat + latDiff;
-    const minLng = location.lng - lngDiff;
-    const maxLng = location.lng + lngDiff;
+    const bounds = getBoundsOfDistance(
+      { latitude: location.lat, longitude: location.lng },
+      RADIUS_KM * 1000
+    );
+    const minLat = bounds[0].latitude;
+    const maxLat = bounds[1].latitude;
+    const minLng = bounds[0].longitude;
+    const maxLng = bounds[1].longitude;
 
     // 3. Fetch initial local messages
     const fetchLocalMessages = async () => {
@@ -222,3 +225,5 @@ export default function SpotChat() {
     </div>
   );
 }
+
+export default withClerk(SpotChat);

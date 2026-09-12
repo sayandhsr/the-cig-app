@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useUser } from '@clerk/clerk-react';
+import { withClerk } from './withClerk.jsx';
 
-export default function GlobalChat() {
+function GlobalChat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const { user } = useUser();
@@ -110,3 +111,5 @@ export default function GlobalChat() {
     </div>
   );
 }
+
+export default withClerk(GlobalChat);

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/clerk-react';
+import { withClerk } from './withClerk.jsx';
 
-export default function Navigation() {
+function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -88,3 +89,5 @@ export default function Navigation() {
     </nav>
   );
 }
+
+export default withClerk(Navigation);
