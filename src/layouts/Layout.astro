@@ -4,12 +4,10 @@ import Navigation from '../components/Navigation.jsx';
 import Footer from '../components/Footer.astro';
 import AgeGate from '../components/AgeGate.jsx';
 import AdBanner from '../components/AdBanner.jsx';
-import { ClerkProvider } from '@clerk/astro/components';
 
 const { title = "KILL SWITCH | SMOKE. CONNECT. TALK." } = Astro.props;
 ---
 
-<ClerkProvider>
 <html lang="en" class="scroll-smooth">
 	<head>
 		<meta charset="utf-8" />
@@ -52,4 +50,3 @@ const { title = "KILL SWITCH | SMOKE. CONNECT. TALK." } = Astro.props;
 		</script>
 	</body>
 </html>
-</ClerkProvider>

@@ -1,14 +1,12 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
+import { clerkMiddleware } from '@clerk/astro/server';
 
-const isProtectedRoute = createRouteMatcher([
-  '/community(.*)',
-  '/debates(.*)',
-  '/global-chat(.*)',
-  '/spot-chat(.*)',
-]);
+const protectedRoutes = ['/community', '/debates', '/global-chat', '/spot-chat'];
 
 export const onRequest = clerkMiddleware((auth, context) => {
-  if (isProtectedRoute(context.request)) {
+  const url = new URL(context.request.url);
+  const isProtected = protectedRoutes.some(route => url.pathname.startsWith(route));
+  
+  if (isProtected) {
     auth().protect();
   }
 });
