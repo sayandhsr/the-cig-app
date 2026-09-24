@@ -244,7 +244,10 @@ function SpotChat() {
           <div ref={messagesEndRef} />
         </div>
         
-        <div className="p-4 bg-vintage-charcoal border-t-[6px] border-white relative z-10">
+        <div className="p-4 bg-vintage-charcoal border-t-[6px] border-white relative z-10 flex flex-col gap-2">
+          <div className="text-[10px] text-vintage-paper/50 font-display tracking-[0.2em] uppercase text-right w-full">
+            * RADAR LOGS ARE PURGED EVERY 14 DAYS.
+          </div>
           <form onSubmit={handleSend} className="flex gap-2 group">
             <input 
               type="text" 

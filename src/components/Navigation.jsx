@@ -21,7 +21,8 @@ function Navigation() {
     { name: 'Spot Chat', href: '/spot-chat' },
     { name: 'Global Chat', href: '/global-chat' },
     { name: 'Debates', href: '/debates' },
-    { name: 'Discover', href: '/discover' }
+    { name: 'Discover', href: '/discover' },
+    { name: 'Profile', href: '/profile' }
   ];
 
   return (
