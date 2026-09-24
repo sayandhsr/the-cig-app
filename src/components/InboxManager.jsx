@@ -108,6 +108,15 @@ export default function InboxManager() {
     });
   };
 
+  useEffect(() => {
+    // Read from URL if a specific chat was linked
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const chatParam = params.get('chat');
+      if (chatParam) setActiveChat(chatParam);
+    }
+  }, []);
+
   if (!user) {
     return (
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-20 border-[8px] border-vintage-red bg-vintage-charcoal shadow-[8px_8px_0px_0px_#bd2620]">
@@ -121,10 +130,10 @@ export default function InboxManager() {
   const sentRequests = connections.filter(c => c.status === 'pending' && c.sender_id === user.id);
 
   return (
-    <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 h-[75vh]">
+    <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 h-[80vh]">
       
-      {/* Sidebar */}
-      <div className="w-full md:w-1/3 bg-vintage-paper border-[6px] border-vintage-charcoal shadow-[6px_6px_0px_0px_#1a1a1a] flex flex-col overflow-hidden">
+      {/* Sidebar - Hide on mobile if a chat is active */}
+      <div className={`${activeChat ? 'hidden md:flex' : 'flex'} w-full md:w-1/3 bg-vintage-paper border-[6px] border-vintage-charcoal shadow-[6px_6px_0px_0px_#1a1a1a] flex-col overflow-hidden h-full`}>
         <div className="flex border-b-[4px] border-vintage-charcoal">
           <button 
             onClick={() => { setActiveTab('messages'); setActiveChat(null); }}
@@ -195,13 +204,21 @@ export default function InboxManager() {
         </div>
       </div>
 
-      {/* Main Chat Area */}
-      <div className="w-full md:w-2/3 bg-vintage-paper border-[6px] border-vintage-charcoal shadow-[6px_6px_0px_0px_#1a1a1a] flex flex-col h-full overflow-hidden">
+      {/* Main Chat Area - Hide on mobile if NO chat is active */}
+      <div className={`${!activeChat ? 'hidden md:flex' : 'flex'} w-full md:w-2/3 bg-vintage-paper border-[6px] border-vintage-charcoal shadow-[6px_6px_0px_0px_#1a1a1a] flex-col h-full overflow-hidden`}>
         {activeChat ? (
           <>
-            <div className="p-4 border-b-[4px] border-vintage-charcoal bg-vintage-charcoal text-vintage-paper font-display uppercase tracking-widest flex items-center gap-3">
-              <MessageSquare className="w-5 h-5 text-vintage-red" />
-              Direct Channel
+            <div className="p-4 border-b-[4px] border-vintage-charcoal bg-vintage-charcoal text-vintage-paper font-display uppercase tracking-widest flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <MessageSquare className="w-5 h-5 text-vintage-red" />
+                Direct Channel
+              </div>
+              <button 
+                onClick={() => { setActiveChat(null); window.history.replaceState({}, '', '/inbox'); }}
+                className="md:hidden text-xs bg-vintage-red px-3 py-1 text-white hover:bg-white hover:text-vintage-red transition-colors border-2 border-transparent hover:border-vintage-red"
+              >
+                BACK TO INBOX
+              </button>
             </div>
             
             <div className="flex-grow overflow-y-auto p-6 bg-vintage-paper/50 flex flex-col gap-4">

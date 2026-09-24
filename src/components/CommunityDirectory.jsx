@@ -155,7 +155,7 @@ export default function CommunityDirectory() {
                     </a>
                   )}
                   {status === 'friends' && (
-                    <a href="/inbox" className="w-full py-3 bg-white text-vintage-charcoal font-display tracking-widest uppercase text-sm border-[3px] border-vintage-charcoal hover:bg-vintage-charcoal hover:text-white transition-all flex items-center justify-center gap-2">
+                    <a href={`/inbox?chat=${connections.find(c => (c.sender_id === user.id && c.receiver_id === profile.user_id) || (c.receiver_id === user.id && c.sender_id === profile.user_id))?.id}`} className="w-full py-3 bg-white text-vintage-charcoal font-display tracking-widest uppercase text-sm border-[3px] border-vintage-charcoal hover:bg-vintage-charcoal hover:text-white transition-all flex items-center justify-center gap-2">
                       <Check className="w-4 h-4" /> MESSAGE
                     </a>
                   )}

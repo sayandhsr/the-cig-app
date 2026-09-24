@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function AgeGate() {
   const [verified, setVerified] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('age-verified') === 'true';
+      const status = localStorage.getItem('age-verified');
+      if (status === 'rejected') window.location.href = '/sorry';
+      return status === 'true';
     }
     return false;
   });
@@ -27,6 +29,7 @@ export default function AgeGate() {
   };
 
   const handleExit = () => {
+    localStorage.setItem('age-verified', 'rejected');
     window.location.href = '/sorry';
   };
 

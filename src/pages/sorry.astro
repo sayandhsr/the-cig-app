@@ -1,27 +1,36 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
 ---
-
-<Layout title="Sorry - 18+ Only">
-  <main class="min-h-[80vh] flex flex-col items-center justify-center p-6 relative overflow-hidden bg-vintage-charcoal">
-    <div class="absolute inset-0 bg-grunge opacity-20 mix-blend-multiply"></div>
-    
-    <div class="relative z-10 bg-vintage-paper p-12 max-w-lg text-center border-[12px] border-white shadow-2xl -rotate-1">
-      <div class="absolute -top-10 -right-10 w-40 h-40 border-8 border-vintage-red/30 rounded-full flex items-center justify-center rotate-12 pointer-events-none">
-        <span class="text-vintage-red/30 font-display text-4xl tracking-widest font-black uppercase">18+</span>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;700&family=Rye&display=swap" rel="stylesheet">
+    <title>Sorry - 18+ Only</title>
+  </head>
+  <body class="bg-vintage-charcoal m-0 p-0">
+    <main class="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden bg-vintage-charcoal">
+      <div class="absolute inset-0 bg-grunge opacity-20 mix-blend-multiply pointer-events-none"></div>
+      
+      <div class="relative z-10 bg-vintage-paper p-12 max-w-lg text-center border-[12px] border-white shadow-2xl -rotate-1">
+        <div class="absolute -top-10 -right-10 w-40 h-40 border-8 border-vintage-red/30 rounded-full flex items-center justify-center rotate-12 pointer-events-none">
+          <span class="text-vintage-red/30 font-display text-4xl tracking-widest font-black uppercase">18+</span>
+        </div>
+        
+        <h1 class="text-6xl font-display text-vintage-charcoal mb-2 uppercase leading-none">Access <br/><span class="text-vintage-red">Denied</span></h1>
+        
+        <div class="h-1 w-full bg-vintage-charcoal my-6"></div>
+        
+        <p class="text-lg text-vintage-charcoal/80 mb-10 leading-relaxed font-serif italic text-left pl-4 border-l-4 border-vintage-red">
+          We are sorry, but you must be at least 18 years old to access this application. Your device has been locked out of the network.
+        </p>
+        
+        <a href="https://google.com" class="block w-full py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase transition-all shadow-[6px_6px_0px_0px_#bd2620] hover:bg-vintage-red hover:text-white hover:shadow-none hover:translate-y-[6px] hover:translate-x-[6px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
+          QUIT APPLICATION
+        </a>
       </div>
-      
-      <h1 class="text-6xl font-display text-vintage-charcoal mb-2 uppercase leading-none">Access <br/><span class="text-vintage-red">Denied</span></h1>
-      
-      <div class="h-1 w-full bg-vintage-charcoal my-6"></div>
-      
-      <p class="text-lg text-vintage-charcoal/80 mb-10 leading-relaxed font-serif italic text-left pl-4 border-l-4 border-vintage-red">
-        We are sorry, but you must be at least 18 years old to access this application. 
-      </p>
-      
-      <a href="/" class="block w-full py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase transition-all shadow-[6px_6px_0px_0px_#bd2620] hover:bg-vintage-red hover:text-white hover:shadow-none hover:translate-y-[6px] hover:translate-x-[6px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
-        RETURN HOME
-      </a>
-    </div>
-  </main>
-</Layout>
+    </main>
+  </body>
+</html>
