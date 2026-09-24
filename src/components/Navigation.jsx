@@ -22,7 +22,9 @@ function Navigation() {
     { name: 'Global Chat', href: '/global-chat' },
     { name: 'Debates', href: '/debates' },
     { name: 'Discover', href: '/discover' },
-    { name: 'Profile', href: '/profile' }
+    { name: 'Network', href: '/community' },
+    { name: 'Profile', href: '/profile' },
+    { name: 'Inbox', href: '/inbox' }
   ];
 
   return (

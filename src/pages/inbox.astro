@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import CommunityDirectory from '../components/CommunityDirectory.jsx';
+import InboxManager from '../components/InboxManager.jsx';
 ---
 
-<Layout title="The Network - KILL SWITCH">
+<Layout title="Inbox - KILL SWITCH">
   <main class="min-h-screen pt-32 pb-16 px-6 relative bg-vintage-charcoal text-vintage-paper">
     <div class="absolute inset-0 bg-grunge opacity-20 mix-blend-multiply pointer-events-none"></div>
     
-    <CommunityDirectory client:only="react" />
+    <InboxManager client:only="react" />
   </main>
 </Layout>
