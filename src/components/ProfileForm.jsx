@@ -94,8 +94,9 @@ export default function ProfileForm() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-vintage-charcoal font-display text-2xl uppercase tracking-widest">Sign in to view your profile.</p>
+      <div className="flex flex-col items-center justify-center py-20 border-[8px] border-vintage-red bg-vintage-charcoal shadow-[8px_8px_0px_0px_#bd2620]">
+        <p className="text-vintage-paper font-display text-3xl uppercase tracking-widest text-center px-4">You must sign in to view your Dossier.</p>
+        <p className="text-vintage-paper/50 font-sans tracking-widest mt-4 uppercase">Use the SIGN IN button in the top right corner.</p>
       </div>
     );
   }

@@ -142,8 +142,7 @@ function SocialDiscovery() {
           </div>
         </div>
 
-        {/* User's Broadcast Settings */}
-        {user && (
+        {user ? (
           <div className="bg-vintage-charcoal rounded-none p-6 md:p-8 mb-16 border-[8px] border-white shadow-[8px_8px_0px_0px_#bd2620] flex flex-col md:flex-row items-center gap-6 md:gap-8 transform -rotate-1 relative">
             <div className="absolute -top-4 -right-4 w-12 h-12 bg-vintage-red rounded-full flex items-center justify-center animate-pulse">
                <span className="text-white font-display text-xs tracking-widest">LIVE</span>
@@ -177,6 +176,11 @@ function SocialDiscovery() {
               {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} 
               BROADCAST
             </button>
+          </div>
+        ) : (
+          <div className="bg-vintage-charcoal rounded-none p-6 md:p-8 mb-16 border-[8px] border-vintage-red shadow-[8px_8px_0px_0px_#1a1a1a] flex flex-col items-center justify-center relative text-center">
+             <h3 className="text-3xl font-display uppercase tracking-widest text-vintage-paper mb-2">Want to broadcast your status?</h3>
+             <p className="text-vintage-paper/60 font-sans uppercase tracking-widest">You must sign in to join the radar and connect with others.</p>
           </div>
         )}
 
