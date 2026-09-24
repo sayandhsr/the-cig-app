@@ -124,41 +124,41 @@ function DebatesManager() {
     <div className="w-full">
       <div className="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
-          <h1 className="text-4xl font-display font-bold text-cream mb-2">Community Debates</h1>
-          <p className="text-muted">Discuss, debate, vote, and share your perspective.</p>
+          <h1 className="text-4xl font-display font-bold text-vintage-charcoal mb-2">Community Debates</h1>
+          <p className="text-vintage-charcoal/80">Discuss, debate, vote, and share your perspective.</p>
         </div>
         <button 
           onClick={() => setShowCreate(true)}
-          className="px-6 py-3 rounded-full bg-gold text-background font-bold tracking-widest hover:bg-gold-light transition-colors shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+          className="px-6 py-3 rounded-none-none bg-vintage-red text-white font-bold tracking-widest hover:bg-vintage-red-light transition-colors shadow-[0_0_15px_rgba(212,175,55,0.2)]"
         >
           START A DEBATE
         </button>
       </div>
 
       {showCreate && (
-        <div className="glass-card p-6 rounded-2xl mb-8 relative border border-gold/30">
-          <button onClick={() => setShowCreate(false)} className="absolute top-4 right-4 text-muted hover:text-white">
+        <div className="bg-vintage-paper border-[8px] border-vintage-charcoal shadow-[8px_8px_0px_0px_#1a1a1a] p-6 rounded-none-none mb-8 relative border border-gold/30">
+          <button onClick={() => setShowCreate(false)} className="absolute top-4 right-4 text-vintage-charcoal/80 hover:text-white">
             <X className="w-6 h-6" />
           </button>
-          <h2 className="text-2xl font-bold text-cream mb-6">Create New Topic</h2>
+          <h2 className="text-2xl font-bold text-vintage-charcoal mb-6">Create New Topic</h2>
           <form onSubmit={handleCreate} className="flex flex-col gap-4">
             <input 
               required
               type="text" 
               placeholder="Title (e.g. Favorite Evening Smoke?)" 
               value={title} onChange={e=>setTitle(e.target.value)}
-              className="bg-surface border border-white/10 rounded-lg p-3 text-cream"
+              className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none p-3 text-vintage-charcoal"
             />
             <textarea 
               placeholder="Provide some context or your stance..." 
               value={desc} onChange={e=>setDesc(e.target.value)}
-              className="bg-surface border border-white/10 rounded-lg p-3 text-cream h-24 resize-none"
+              className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none p-3 text-vintage-charcoal h-24 resize-none"
             />
             <div className="flex gap-4">
-              <label className="flex items-center gap-2 text-cream cursor-pointer">
+              <label className="flex items-center gap-2 text-vintage-charcoal cursor-pointer">
                 <input type="radio" checked={type === 'debate'} onChange={() => setType('debate')} className="accent-gold" /> Open Debate
               </label>
-              <label className="flex items-center gap-2 text-cream cursor-pointer">
+              <label className="flex items-center gap-2 text-vintage-charcoal cursor-pointer">
                 <input type="radio" checked={type === 'poll'} onChange={() => setType('poll')} className="accent-gold" /> Poll
               </label>
             </div>
@@ -176,14 +176,14 @@ function DebatesManager() {
                       newOpts[idx] = e.target.value;
                       setOptions(newOpts);
                     }}
-                    className="bg-surface border border-white/10 rounded-lg p-2 text-sm text-cream w-2/3"
+                    className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none p-2 text-sm text-vintage-charcoal w-2/3"
                   />
                 ))}
-                <button type="button" onClick={() => setOptions([...options, ''])} className="text-gold text-sm text-left mt-1">+ Add Option</button>
+                <button type="button" onClick={() => setOptions([...options, ''])} className="text-vintage-red text-sm text-left mt-1">+ Add Option</button>
               </div>
             )}
             
-            <button type="submit" className="mt-4 py-3 rounded-xl bg-gold text-background font-bold tracking-widest hover:bg-gold-light transition-colors w-full sm:w-auto self-end px-8">
+            <button type="submit" className="mt-4 py-3 rounded-none-none bg-vintage-red text-white font-bold tracking-widest hover:bg-vintage-red-light transition-colors w-full sm:w-auto self-end px-8">
               POST TOPIC
             </button>
           </form>
@@ -191,48 +191,48 @@ function DebatesManager() {
       )}
 
       <div className="space-y-6">
-        {debates.length === 0 && <p className="text-muted italic text-center py-10">No debates yet. Be the first to start one!</p>}
+        {debates.length === 0 && <p className="text-vintage-charcoal/80 italic text-center py-10">No debates yet. Be the first to start one!</p>}
         
         {debates.map((debate) => {
           const isExpanded = expandedDebate === debate.id;
           const userVote = user ? debate.votes[user.id] : null;
           
           return (
-            <div key={debate.id} className="glass-card p-6 rounded-2xl flex flex-col gap-6 group hover:border-gold/30 transition-colors">
+            <div key={debate.id} className="bg-vintage-paper border-[8px] border-vintage-charcoal shadow-[8px_8px_0px_0px_#1a1a1a] p-6 rounded-none-none flex flex-col gap-6 group hover:border-gold/30 transition-colors">
               <div className="flex flex-col sm:flex-row sm:items-start gap-6">
                 
                 {/* Voting Left Column */}
                 {debate.type === 'debate' ? (
-                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-surface sm:bg-transparent p-2 sm:p-0 rounded-lg">
-                    <button onClick={() => handleVote(debate, 1)} className={`hover:text-gold transition-colors ${userVote === 1 ? 'text-gold' : 'text-muted'}`}>
+                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-vintage-paper sm:bg-transparent p-2 sm:p-0 rounded-none-none">
+                    <button onClick={() => handleVote(debate, 1)} className={`hover:text-vintage-red transition-colors ${userVote === 1 ? 'text-vintage-red' : 'text-vintage-charcoal/80'}`}>
                       <ChevronUp className="w-8 h-8" />
                     </button>
-                    <span className="text-lg font-bold text-cream">{getVoteCount(debate)}</span>
-                    <button onClick={() => handleVote(debate, -1)} className={`hover:text-red-500 transition-colors ${userVote === -1 ? 'text-red-500' : 'text-muted'}`}>
+                    <span className="text-lg font-bold text-vintage-charcoal">{getVoteCount(debate)}</span>
+                    <button onClick={() => handleVote(debate, -1)} className={`hover:text-red-500 transition-colors ${userVote === -1 ? 'text-red-500' : 'text-vintage-charcoal/80'}`}>
                       <ChevronDown className="w-8 h-8" />
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-surface sm:bg-transparent p-2 sm:p-0 rounded-lg">
-                     <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gold">
+                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-vintage-paper sm:bg-transparent p-2 sm:p-0 rounded-none-none">
+                     <div className="w-10 h-10 rounded-none-none border border-[4px] border-vintage-charcoal flex items-center justify-center text-vintage-red">
                       <Flame className="w-5 h-5" />
                     </div>
-                    <span className="text-xs text-muted text-center">{getVoteCount(debate)} votes</span>
+                    <span className="text-xs text-vintage-charcoal/80 text-center">{getVoteCount(debate)} votes</span>
                   </div>
                 )}
                 
                 {/* Content */}
                 <div className="flex-grow cursor-pointer" onClick={() => toggleExpand(debate.id)}>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[10px] uppercase tracking-widest px-2 py-1 bg-white/5 text-gold rounded">{debate.type}</span>
-                    <span className="text-xs text-muted">Posted by {debate.author_name} • {new Date(debate.created_at).toLocaleDateString()}</span>
+                    <span className="text-[10px] uppercase tracking-widest px-2 py-1 bg-white/5 text-vintage-red rounded-none">{debate.type}</span>
+                    <span className="text-xs text-vintage-charcoal/80">Posted by {debate.author_name} • {new Date(debate.created_at).toLocaleDateString()}</span>
                   </div>
-                  <h3 className="text-xl font-display font-medium text-cream group-hover:text-gold transition-colors mb-2">
+                  <h3 className="text-xl font-display font-medium text-vintage-charcoal group-hover:text-vintage-red transition-colors mb-2">
                     {debate.title}
                   </h3>
-                  <p className="text-muted text-sm mb-4 line-clamp-2">{debate.description}</p>
+                  <p className="text-vintage-charcoal/80 text-sm mb-4 line-clamp-2">{debate.description}</p>
                   
-                  <div className="flex items-center gap-2 text-sm text-muted">
+                  <div className="flex items-center gap-2 text-sm text-vintage-charcoal/80">
                     <MessageCircle className="w-4 h-4" />
                     {comments[debate.id]?.length || 0} Comments {isExpanded ? '(Click to collapse)' : '(Click to view)'}
                   </div>
@@ -241,12 +241,12 @@ function DebatesManager() {
 
               {/* Expanded View */}
               {isExpanded && (
-                <div className="mt-4 pt-6 border-t border-white/10 pl-0 sm:pl-[84px]">
+                <div className="mt-4 pt-6 border-t border-[4px] border-vintage-charcoal pl-0 sm:pl-[84px]">
                   
                   {/* Poll Options */}
                   {debate.type === 'poll' && (
                     <div className="flex flex-col gap-3 mb-8">
-                      <h4 className="text-cream font-medium mb-2">Cast your vote:</h4>
+                      <h4 className="text-vintage-charcoal font-medium mb-2">Cast your vote:</h4>
                       {debate.options.map((opt, idx) => {
                         const votesForOpt = Object.values(debate.votes).filter(v => v === idx).length;
                         const totalVotes = Object.keys(debate.votes).length || 1;
@@ -257,13 +257,13 @@ function DebatesManager() {
                           <div 
                             key={idx} 
                             onClick={() => handleVote(debate, idx)}
-                            className={`relative p-3 rounded-lg border ${isSelected ? 'border-gold bg-gold/10' : 'border-white/10 bg-surface hover:bg-white/5'} cursor-pointer flex justify-between items-center z-10 overflow-hidden`}
+                            className={`relative p-3 rounded-none-none border ${isSelected ? 'border-gold bg-vintage-red/10' : 'border-[4px] border-vintage-charcoal bg-vintage-paper hover:bg-white/5'} cursor-pointer flex justify-between items-center z-10 overflow-hidden`}
                           >
                             <div className="absolute top-0 left-0 h-full bg-white/5 -z-10" style={{ width: `${pct}%` }}></div>
-                            <span className="text-cream flex items-center gap-2">
-                              {isSelected && <Check className="w-4 h-4 text-gold" />} {opt}
+                            <span className="text-vintage-charcoal flex items-center gap-2">
+                              {isSelected && <Check className="w-4 h-4 text-vintage-red" />} {opt}
                             </span>
-                            <span className="text-muted text-sm">{votesForOpt} ({pct}%)</span>
+                            <span className="text-vintage-charcoal/80 text-sm">{votesForOpt} ({pct}%)</span>
                           </div>
                         )
                       })}
@@ -271,18 +271,18 @@ function DebatesManager() {
                   )}
 
                   {/* Comments Section */}
-                  <h4 className="text-cream font-medium mb-4">Discussion</h4>
+                  <h4 className="text-vintage-charcoal font-medium mb-4">Discussion</h4>
                   <div className="flex flex-col gap-4 mb-6 max-h-64 overflow-y-auto pr-2">
                     {(!comments[debate.id] || comments[debate.id].length === 0) && (
-                      <p className="text-sm text-muted italic">No comments yet.</p>
+                      <p className="text-sm text-vintage-charcoal/80 italic">No comments yet.</p>
                     )}
                     {comments[debate.id]?.map(comment => (
-                      <div key={comment.id} className="bg-surface p-3 rounded-lg">
+                      <div key={comment.id} className="bg-vintage-paper p-3 rounded-none-none">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-sm font-bold text-gold">{comment.author_name}</span>
-                          <span className="text-[10px] text-muted">{new Date(comment.created_at).toLocaleDateString()}</span>
+                          <span className="text-sm font-bold text-vintage-red">{comment.author_name}</span>
+                          <span className="text-[10px] text-vintage-charcoal/80">{new Date(comment.created_at).toLocaleDateString()}</span>
                         </div>
-                        <p className="text-sm text-cream/90">{comment.text}</p>
+                        <p className="text-sm text-vintage-charcoal/90">{comment.text}</p>
                       </div>
                     ))}
                   </div>
@@ -296,12 +296,12 @@ function DebatesManager() {
                       onChange={e => setCommentInput(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && handleComment(debate.id)}
                       disabled={!user}
-                      className="flex-grow bg-surface border border-white/10 rounded-full px-4 py-2 text-sm text-cream focus:outline-none focus:border-gold"
+                      className="flex-grow bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none px-4 py-2 text-sm text-vintage-charcoal focus:outline-none focus:border-gold"
                     />
                     <button 
                       onClick={() => handleComment(debate.id)}
                       disabled={!user || !commentInput.trim()}
-                      className="px-6 py-2 rounded-full bg-gold text-background font-bold text-sm hover:bg-gold-light disabled:opacity-50"
+                      className="px-6 py-2 rounded-none-none bg-vintage-red text-white font-bold text-sm hover:bg-vintage-red-light disabled:opacity-50"
                     >
                       Post
                     </button>

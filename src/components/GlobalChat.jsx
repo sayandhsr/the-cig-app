@@ -74,15 +74,17 @@ function GlobalChat() {
   };
 
   return (
-    <div className="glass-card rounded-2xl h-[600px] flex flex-col overflow-hidden">
-      <div className="flex-grow p-6 overflow-y-auto flex flex-col gap-4">
+    <div className="bg-vintage-paper border-[8px] border-white shadow-[8px_8px_0px_0px_#1a1a1a] h-[600px] flex flex-col overflow-hidden transform -rotate-1 relative">
+      <div className="absolute inset-0 bg-grunge opacity-10 mix-blend-multiply pointer-events-none"></div>
+      
+      <div className="flex-grow p-6 overflow-y-auto flex flex-col gap-4 relative z-10">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.user_id === user?.id ? 'items-end' : 'items-start'}`}>
             <div className="flex items-baseline gap-2 mb-1">
-              <span className={`text-sm font-medium ${msg.user_id === user?.id ? 'text-gold' : 'text-cream'}`}>{msg.username}</span>
-              <span className="text-[10px] text-muted">{formatTime(msg.created_at)}</span>
+              <span className={`text-xs font-display tracking-widest uppercase ${msg.user_id === user?.id ? 'text-vintage-red' : 'text-vintage-charcoal/70'}`}>{msg.username}</span>
+              <span className="text-[10px] text-vintage-charcoal/50 font-serif">{formatTime(msg.created_at)}</span>
             </div>
-            <div className={`px-4 py-2 rounded-2xl max-w-[80%] ${msg.user_id === user?.id ? 'bg-tobacco text-cream rounded-tr-none' : 'bg-surface border border-white/5 text-cream/90 rounded-tl-none'}`}>
+            <div className={`px-5 py-3 font-serif text-lg leading-relaxed ${msg.user_id === user?.id ? 'bg-vintage-red text-white shadow-[4px_4px_0px_0px_rgba(26,26,26,1)]' : 'bg-white text-vintage-charcoal shadow-[4px_4px_0px_0px_rgba(189,38,32,0.5)] border-2 border-vintage-charcoal'}`}>
               {msg.text}
             </div>
           </div>
@@ -90,22 +92,22 @@ function GlobalChat() {
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="p-4 bg-surface border-t border-white/5">
+      <div className="p-4 bg-vintage-charcoal border-t-[6px] border-white relative z-10">
         <form onSubmit={handleSend} className="flex gap-2">
           <input 
             type="text" 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={!user}
-            placeholder={user ? "Type a message to the global community..." : "Sign in to chat..."}
-            className="flex-grow bg-background border border-white/10 rounded-full px-6 py-3 text-sm text-cream focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
+            placeholder={user ? "BROADCAST TO THE WORLD..." : "SIGN IN TO CHAT..."}
+            className="flex-grow bg-vintage-paper border-2 border-transparent text-vintage-charcoal font-serif px-6 py-3 focus:outline-none focus:border-vintage-red transition-colors disabled:opacity-50 placeholder:text-vintage-charcoal/50"
           />
           <button 
             type="submit"
             disabled={!user || !input.trim()}
-            className="w-12 h-12 rounded-full bg-gold text-background flex items-center justify-center hover:bg-gold-light transition-colors disabled:opacity-50"
+            className="w-16 h-12 bg-vintage-red text-white font-display tracking-widest flex items-center justify-center hover:bg-white hover:text-vintage-red border-2 border-transparent hover:border-vintage-red transition-colors disabled:opacity-50"
           >
-            <Send className="w-5 h-5 ml-[-2px]" />
+            <Send className="w-5 h-5" />
           </button>
         </form>
       </div>

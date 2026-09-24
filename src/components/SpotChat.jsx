@@ -140,39 +140,42 @@ function SpotChat() {
 
   if (locError) {
     return (
-      <div className="flex flex-col items-center justify-center h-[500px] glass-card rounded-2xl p-6 text-center">
-        <MapPin className="w-12 h-12 text-red-500 mb-4" />
-        <h2 className="text-2xl font-bold text-cream mb-2">Location Required</h2>
-        <p className="text-muted">{locError}</p>
+      <div className="flex flex-col items-center justify-center h-[500px] bg-vintage-paper border-[8px] border-white shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] rounded-sm p-6 text-center transform -rotate-1">
+        <MapPin className="w-16 h-16 text-vintage-red mb-4" />
+        <h2 className="text-4xl font-display uppercase tracking-wider text-vintage-charcoal mb-2">Location Required</h2>
+        <p className="text-vintage-charcoal/80 font-serif italic text-lg">{locError}</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[700px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[700px]">
       {/* Map Section */}
-      <div className="glass-card rounded-2xl overflow-hidden relative z-10 border border-white/5">
+      <div className="bg-vintage-paper border-[8px] border-white shadow-[8px_8px_0px_0px_#1a1a1a] overflow-hidden relative z-10 transform -rotate-1">
         <MapContainer 
           center={[location.lat, location.lng]} 
           zoom={12} 
-          style={{ height: '100%', width: '100%', background: '#121212' }}
+          style={{ height: '100%', width: '100%', background: '#dfcdb4' }}
         >
-          {/* Dark theme tiles */}
+          {/* Light vintage style map if possible, fallback to standard */}
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+            attribution='Tiles &copy; Esri'
           />
           <Marker position={[location.lat, location.lng]}>
             <Popup>
-              You are here. Chatting within 15km.
+              <span className="font-display uppercase tracking-wider text-vintage-red">You are here.</span>
             </Popup>
           </Marker>
           <Circle 
             center={[location.lat, location.lng]} 
-            pathOptions={{ color: '#D4AF37', fillColor: '#D4AF37', fillOpacity: 0.1 }} 
+            pathOptions={{ color: '#bd2620', fillColor: '#bd2620', fillOpacity: 0.15, weight: 2 }} 
             radius={RADIUS_KM * 1000} 
           />
         </MapContainer>
+        <div className="absolute top-4 left-4 z-[400] bg-vintage-charcoal text-vintage-paper px-4 py-2 font-display uppercase tracking-widest text-sm shadow-xl">
+          Radar Active
+        </div>
       </div>
 
       {/* Chat Section */}
