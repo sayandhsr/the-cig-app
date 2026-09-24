@@ -37,7 +37,7 @@ function Navigation() {
             <a 
               key={link.name}
               href={link.href}
-              className={`text-sm font-display tracking-[0.2em] uppercase hover:text-vintage-red transition-colors ${isScrolled ? 'text-vintage-paper/80' : 'text-vintage-charcoal/80'}`}
+              className={`text-sm font-display tracking-[0.2em] uppercase transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red focus-visible:ring-offset-4 focus-visible:ring-offset-transparent active:scale-95 ${isScrolled ? 'text-vintage-paper/80 hover:text-vintage-red' : 'text-vintage-charcoal/80 hover:text-vintage-red'}`}
             >
               {link.name}
             </a>
@@ -46,7 +46,7 @@ function Navigation() {
           <div className="pl-8 border-l border-current/20 flex items-center gap-4">
             {!user ? (
               <SignInButton mode="modal">
-                <button className="px-6 py-2 border-2 border-vintage-red text-vintage-red hover:bg-vintage-red hover:text-white transition-colors font-display tracking-[0.2em] uppercase text-sm">
+                <button className="px-6 py-2 border-[3px] border-vintage-red text-vintage-red hover:bg-vintage-red hover:text-white transition-all font-display tracking-[0.2em] uppercase text-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
                   SIGN IN
                 </button>
               </SignInButton>
@@ -58,7 +58,7 @@ function Navigation() {
 
         {/* Mobile Menu Toggle */}
         <button 
-          className={`md:hidden p-2 ${isScrolled ? 'text-vintage-paper' : 'text-vintage-charcoal'}`}
+          className={`md:hidden p-2 transition-transform active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red ${isScrolled ? 'text-vintage-paper' : 'text-vintage-charcoal'}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X /> : <Menu />}
@@ -67,12 +67,12 @@ function Navigation() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-vintage-charcoal border-b border-white/5 p-6 flex flex-col gap-4 shadow-2xl">
+        <div className="md:hidden absolute top-full left-0 w-full bg-vintage-charcoal border-b border-white/5 p-6 flex flex-col gap-4 shadow-2xl origin-top animate-in fade-in slide-in-from-top-4 duration-200">
           {navLinks.map((link) => (
             <a 
               key={link.name}
               href={link.href}
-              className="text-2xl font-display tracking-[0.2em] uppercase text-vintage-paper py-4 border-b border-white/5"
+              className="text-2xl font-display tracking-[0.2em] uppercase text-vintage-paper py-4 border-b border-white/5 hover:text-vintage-red transition-colors active:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red px-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.name}
@@ -81,7 +81,7 @@ function Navigation() {
           {!user ? (
             <div className="py-4">
               <SignInButton mode="modal">
-                <button className="w-full px-6 py-4 bg-vintage-red text-white font-display text-xl tracking-[0.2em] uppercase shadow-lg">
+                <button className="w-full px-6 py-4 bg-vintage-red text-white font-display text-xl tracking-[0.2em] uppercase shadow-lg transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white">
                   SIGN IN
                 </button>
               </SignInButton>

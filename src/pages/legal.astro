@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Legal - KILL SWITCH">
+  <main class="min-h-screen pt-32 pb-16 px-6 relative bg-vintage-charcoal text-vintage-paper">
+    <div class="absolute inset-0 bg-grunge opacity-20 mix-blend-multiply pointer-events-none"></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+      <h1 class="text-6xl md:text-8xl font-display uppercase tracking-widest text-vintage-paper mb-4">LEGAL <span class="text-vintage-red">STUFF</span></h1>
+      <div class="h-2 w-32 bg-vintage-red mb-12"></div>
+      
+      <div class="space-y-12 font-serif text-lg leading-relaxed text-vintage-paper/80">
+        <section>
+          <h2 class="text-3xl font-display uppercase text-vintage-paper mb-6 tracking-widest border-l-4 border-vintage-red pl-4">Terms of Service</h2>
+          <p class="mb-4">By accessing KILL SWITCH (hereinafter referred to as "the App"), you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the App.</p>
+          <ul class="list-disc pl-8 space-y-2 mb-4">
+            <li><strong>Age Restriction:</strong> You must be at least 18 years of age to use this App. By entering, you warrant that you meet this age requirement.</li>
+            <li><strong>User Conduct:</strong> You agree not to use the App for any unlawful purpose or to harass, abuse, or harm another person.</li>
+            <li><strong>Content:</strong> Any messages, statuses, or polls you post are your sole responsibility. We reserve the right to remove any content at our discretion.</li>
+            <li><strong>No Medical Advice:</strong> The App is a social platform and does not provide medical advice regarding smoking, tobacco, or health.</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2 class="text-3xl font-display uppercase text-vintage-paper mb-6 tracking-widest border-l-4 border-vintage-red pl-4">Privacy Policy</h2>
+          <p class="mb-4">Your privacy is important to us. This policy outlines how we handle your data.</p>
+          <ul class="list-disc pl-8 space-y-2 mb-4">
+            <li><strong>Authentication Data:</strong> We use Clerk for authentication. Your login credentials are securely managed by Clerk and are subject to their privacy policy.</li>
+            <li><strong>Location Data:</strong> The "Spot Chat" feature requires your geographic location to match you with nearby users. This location data is stored temporarily in our database to facilitate the chat and is not sold to third parties.</li>
+            <li><strong>User Content:</strong> Chats, polls, and discovery statuses are stored on our Supabase backend. Global chats are public; spot chats are visible to nearby users. Do not share sensitive personal information.</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2 class="text-3xl font-display uppercase text-vintage-paper mb-6 tracking-widest border-l-4 border-vintage-red pl-4">Disclaimer</h2>
+          <p class="mb-4 font-sans font-bold uppercase tracking-widest text-vintage-red">WARNING: Smoking causes serious health risks.</p>
+          <p>This application is designed as a social platform for adults who have already made the choice to smoke or use tobacco products. We do not encourage, endorse, or promote smoking to non-smokers or minors.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+</Layout>

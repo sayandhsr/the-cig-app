@@ -227,10 +227,10 @@ function SocialDiscovery() {
                   </div>
 
                   <div className="flex items-center gap-4 mt-auto pt-6 border-t-[4px] border-vintage-charcoal relative z-10">
-                    <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-vintage-charcoal text-vintage-paper hover:bg-vintage-red hover:text-white transition-colors text-sm font-display tracking-[0.2em] uppercase">
+                    <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-vintage-charcoal text-vintage-paper hover:bg-vintage-red hover:text-white transition-all text-sm font-display tracking-[0.2em] uppercase focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
                       <MessageCircle className="w-4 h-4" /> CHAT
                     </button>
-                    <button className="flex-1 flex items-center justify-center gap-2 py-4 border-[4px] border-vintage-charcoal text-vintage-charcoal hover:bg-vintage-charcoal hover:text-vintage-paper transition-colors text-sm font-display tracking-[0.2em] uppercase">
+                    <button onClick={() => alert("Direct messaging is coming soon!")} className="flex-1 flex items-center justify-center gap-2 py-4 border-[4px] border-vintage-charcoal text-vintage-charcoal hover:bg-vintage-charcoal hover:text-vintage-paper transition-all text-sm font-display tracking-[0.2em] uppercase focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95">
                       <UserPlus className="w-4 h-4" /> CONNECT
                     </button>
                   </div>

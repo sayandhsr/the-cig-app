@@ -60,17 +60,21 @@ export default function AgeGate() {
             <div className="flex flex-col gap-4 w-full mt-4">
               <button 
                 onClick={handleVerify}
-                className="w-full py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-red hover:text-white transition-all shadow-[6px_6px_0px_0px_#bd2620] hover:shadow-none hover:translate-y-[6px] hover:translate-x-[6px]"
+                className="w-full py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase transition-all shadow-[6px_6px_0px_0px_#bd2620] hover:bg-vintage-red hover:text-white hover:shadow-none hover:translate-y-[6px] hover:translate-x-[6px] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-[0.98]"
               >
                 I AM 18+
               </button>
               <button 
                 onClick={handleExit}
-                className="w-full py-4 text-vintage-charcoal font-sans font-medium tracking-[0.1em] uppercase hover:text-vintage-red transition-colors underline decoration-2 underline-offset-4 mt-2"
+                className="w-full py-4 text-vintage-charcoal font-sans font-medium tracking-[0.1em] uppercase transition-all underline decoration-2 underline-offset-4 mt-2 hover:text-vintage-red focus-visible:outline-none focus-visible:text-vintage-red active:scale-[0.98]"
               >
                 I am under 18
               </button>
             </div>
+            
+            <a href="/legal" className="mt-8 text-xs font-sans uppercase tracking-widest text-vintage-charcoal/50 hover:text-vintage-red transition-colors">
+              Terms & Privacy
+            </a>
           </motion.div>
         </motion.div>
       )}

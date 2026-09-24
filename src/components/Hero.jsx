@@ -44,10 +44,10 @@ export default function Hero() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button className="w-full sm:w-auto px-10 py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-red hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl">
+            <button className="w-full sm:w-auto px-10 py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-red hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95 active:translate-y-0">
               Enter
             </button>
-            <button className="w-full sm:w-auto px-10 py-5 border-4 border-vintage-charcoal text-vintage-charcoal font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-charcoal hover:text-vintage-paper transition-all transform hover:-translate-y-1">
+            <button className="w-full sm:w-auto px-10 py-5 border-[4px] border-vintage-charcoal text-vintage-charcoal font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-charcoal hover:text-vintage-paper transition-all transform hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95 active:translate-y-0">
               About
             </button>
           </div>

@@ -129,14 +129,14 @@ function DebatesManager() {
         </div>
         <button 
           onClick={() => setShowCreate(true)}
-          className="px-6 py-3 rounded-none-none bg-vintage-red text-white font-bold tracking-widest hover:bg-vintage-red-light transition-colors shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+          className="px-6 py-3 rounded-none bg-vintage-red text-white font-bold tracking-widest hover:bg-vintage-charcoal transition-colors shadow-[0_0_15px_rgba(212,175,55,0.2)]"
         >
           START A DEBATE
         </button>
       </div>
 
       {showCreate && (
-        <div className="bg-vintage-paper border-[8px] border-vintage-charcoal shadow-[8px_8px_0px_0px_#1a1a1a] p-6 rounded-none-none mb-8 relative border border-gold/30">
+        <div className="bg-vintage-paper border-[8px] border-vintage-charcoal shadow-[8px_8px_0px_0px_#1a1a1a] p-6 rounded-none mb-8 relative border border-gold/30">
           <button onClick={() => setShowCreate(false)} className="absolute top-4 right-4 text-vintage-charcoal/80 hover:text-white">
             <X className="w-6 h-6" />
           </button>
@@ -147,12 +147,12 @@ function DebatesManager() {
               type="text" 
               placeholder="Title (e.g. Favorite Evening Smoke?)" 
               value={title} onChange={e=>setTitle(e.target.value)}
-              className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none p-3 text-vintage-charcoal"
+              className="bg-vintage-paper border-[4px] border-vintage-charcoal rounded-none p-3 text-vintage-charcoal focus:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red"
             />
             <textarea 
               placeholder="Provide some context or your stance..." 
               value={desc} onChange={e=>setDesc(e.target.value)}
-              className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none p-3 text-vintage-charcoal h-24 resize-none"
+              className="bg-vintage-paper border-[4px] border-vintage-charcoal rounded-none p-3 text-vintage-charcoal h-24 resize-none focus:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red"
             />
             <div className="flex gap-4">
               <label className="flex items-center gap-2 text-vintage-charcoal cursor-pointer">
@@ -176,14 +176,14 @@ function DebatesManager() {
                       newOpts[idx] = e.target.value;
                       setOptions(newOpts);
                     }}
-                    className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none p-2 text-sm text-vintage-charcoal w-2/3"
+                    className="bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none p-2 text-sm text-vintage-charcoal w-2/3"
                   />
                 ))}
                 <button type="button" onClick={() => setOptions([...options, ''])} className="text-vintage-red text-sm text-left mt-1">+ Add Option</button>
               </div>
             )}
             
-            <button type="submit" className="mt-4 py-3 rounded-none-none bg-vintage-red text-white font-bold tracking-widest hover:bg-vintage-red-light transition-colors w-full sm:w-auto self-end px-8">
+            <button type="submit" className="mt-4 py-3 rounded-none bg-vintage-red text-white font-bold tracking-widest hover:bg-vintage-charcoal transition-all w-full sm:w-auto self-end px-8 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
               POST TOPIC
             </button>
           </form>
@@ -198,12 +198,12 @@ function DebatesManager() {
           const userVote = user ? debate.votes[user.id] : null;
           
           return (
-            <div key={debate.id} className="bg-vintage-paper border-[8px] border-vintage-charcoal shadow-[8px_8px_0px_0px_#1a1a1a] p-6 rounded-none-none flex flex-col gap-6 group hover:border-gold/30 transition-colors">
+            <div key={debate.id} className="bg-vintage-paper border-[8px] border-vintage-charcoal shadow-[8px_8px_0px_0px_#1a1a1a] p-6 rounded-none flex flex-col gap-6 group hover:border-vintage-red transition-colors">
               <div className="flex flex-col sm:flex-row sm:items-start gap-6">
                 
                 {/* Voting Left Column */}
                 {debate.type === 'debate' ? (
-                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-vintage-paper sm:bg-transparent p-2 sm:p-0 rounded-none-none">
+                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-vintage-paper sm:bg-transparent p-2 sm:p-0 rounded-none">
                     <button onClick={() => handleVote(debate, 1)} className={`hover:text-vintage-red transition-colors ${userVote === 1 ? 'text-vintage-red' : 'text-vintage-charcoal/80'}`}>
                       <ChevronUp className="w-8 h-8" />
                     </button>
@@ -213,8 +213,8 @@ function DebatesManager() {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-vintage-paper sm:bg-transparent p-2 sm:p-0 rounded-none-none">
-                     <div className="w-10 h-10 rounded-none-none border border-[4px] border-vintage-charcoal flex items-center justify-center text-vintage-red">
+                  <div className="flex flex-row sm:flex-col items-center gap-2 sm:min-w-[60px] bg-vintage-paper sm:bg-transparent p-2 sm:p-0 rounded-none">
+                     <div className="w-10 h-10 rounded-none border border-[4px] border-vintage-charcoal flex items-center justify-center text-vintage-red">
                       <Flame className="w-5 h-5" />
                     </div>
                     <span className="text-xs text-vintage-charcoal/80 text-center">{getVoteCount(debate)} votes</span>
@@ -257,9 +257,9 @@ function DebatesManager() {
                           <div 
                             key={idx} 
                             onClick={() => handleVote(debate, idx)}
-                            className={`relative p-3 rounded-none-none border ${isSelected ? 'border-gold bg-vintage-red/10' : 'border-[4px] border-vintage-charcoal bg-vintage-paper hover:bg-white/5'} cursor-pointer flex justify-between items-center z-10 overflow-hidden`}
+                            className={`relative p-3 rounded-none border ${isSelected ? 'border-vintage-red bg-vintage-red/10' : 'border-[4px] border-vintage-charcoal bg-vintage-paper hover:bg-white/5'} cursor-pointer flex justify-between items-center z-10 overflow-hidden`}
                           >
-                            <div className="absolute top-0 left-0 h-full bg-white/5 -z-10" style={{ width: `${pct}%` }}></div>
+                            <div className="absolute top-0 left-0 h-full bg-vintage-red/20 -z-10 transition-all duration-1000 ease-out" style={{ width: `${pct}%` }}></div>
                             <span className="text-vintage-charcoal flex items-center gap-2">
                               {isSelected && <Check className="w-4 h-4 text-vintage-red" />} {opt}
                             </span>
@@ -277,7 +277,7 @@ function DebatesManager() {
                       <p className="text-sm text-vintage-charcoal/80 italic">No comments yet.</p>
                     )}
                     {comments[debate.id]?.map(comment => (
-                      <div key={comment.id} className="bg-vintage-paper p-3 rounded-none-none">
+                      <div key={comment.id} className="bg-vintage-paper p-3 rounded-none">
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-sm font-bold text-vintage-red">{comment.author_name}</span>
                           <span className="text-[10px] text-vintage-charcoal/80">{new Date(comment.created_at).toLocaleDateString()}</span>
@@ -296,12 +296,12 @@ function DebatesManager() {
                       onChange={e => setCommentInput(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && handleComment(debate.id)}
                       disabled={!user}
-                      className="flex-grow bg-vintage-paper border border-[4px] border-vintage-charcoal rounded-none-none px-4 py-2 text-sm text-vintage-charcoal focus:outline-none focus:border-gold"
+                      className="flex-grow bg-vintage-paper border-[4px] border-vintage-charcoal rounded-none px-4 py-2 text-sm text-vintage-charcoal focus:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red"
                     />
                     <button 
                       onClick={() => handleComment(debate.id)}
                       disabled={!user || !commentInput.trim()}
-                      className="px-6 py-2 rounded-none-none bg-vintage-red text-white font-bold text-sm hover:bg-vintage-red-light disabled:opacity-50"
+                      className="px-6 py-2 rounded-none bg-vintage-red text-white font-bold text-sm hover:bg-vintage-charcoal disabled:opacity-50 transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95"
                     >
                       Post
                     </button>
