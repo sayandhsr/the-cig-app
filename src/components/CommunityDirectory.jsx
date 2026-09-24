@@ -11,38 +11,41 @@ export default function CommunityDirectory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDirectory = async () => {
-      setLoading(true);
+    const fetchData = async () => {
       // Fetch all user profiles
-      const { data: users, error: userErr } = await supabase
+      const { data: users } = await supabase
         .from('user_profiles')
         .select('*')
         .order('updated_at', { ascending: false });
         
-      if (!userErr && users) {
-        setProfiles(users);
-      }
+      if (users) setProfiles(users);
 
       // If logged in, fetch current connection statuses
       if (user) {
-        const { data: conns, error: connErr } = await supabase
+        const { data: conns } = await supabase
           .from('connections')
           .select('*')
           .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
           
-        if (!connErr && conns) {
-          setConnections(conns);
-        }
+        if (conns) setConnections(conns);
       }
-      setLoading(false);
     };
     
-    fetchDirectory();
+    // Initial load
+    fetchData().then(() => setLoading(false));
+
+    // Silent polling every 5 seconds for live updates without disturbing the user
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
   }, [user]);
 
   const handleConnect = async (receiverId) => {
     if (!user) return alert("You must sign in to connect.");
     
+    // Optimistic UI Update so it instantly says PENDING...
+    const optimisticConn = { id: 'temp', sender_id: user.id, receiver_id: receiverId, status: 'pending' };
+    setConnections(prev => [...prev, optimisticConn]);
+
     const { data, error } = await supabase
       .from('connections')
       .insert({
@@ -52,8 +55,12 @@ export default function CommunityDirectory() {
       })
       .select();
       
-    if (!error && data) {
-      setConnections(prev => [...prev, data[0]]);
+    if (error) {
+       // Revert if failed
+       setConnections(prev => prev.filter(c => c.id !== 'temp'));
+    } else if (data) {
+       // Replace temp with real
+       setConnections(prev => prev.map(c => c.id === 'temp' ? data[0] : c));
     }
   };
 

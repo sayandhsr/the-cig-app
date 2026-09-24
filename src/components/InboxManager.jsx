@@ -26,10 +26,8 @@ export default function InboxManager() {
     if (!user) return;
     
     const fetchInbox = async () => {
-      setLoading(true);
-      
       // Fetch all connections
-      const { data: conns, error } = await supabase
+      const { data: conns } = await supabase
         .from('connections')
         .select('*')
         .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
@@ -52,10 +50,12 @@ export default function InboxManager() {
           }
         }
       }
-      setLoading(false);
     };
     
-    fetchInbox();
+    fetchInbox().then(() => setLoading(false));
+    
+    const interval = setInterval(fetchInbox, 5000);
+    return () => clearInterval(interval);
   }, [user]);
 
   // Handle Realtime Messages when activeChat is selected
