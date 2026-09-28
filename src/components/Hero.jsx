@@ -43,13 +43,16 @@ export default function Hero() {
             Open debates, anonymous spots, real talk. Enter the smoke.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 flex-wrap">
             <button className="w-full sm:w-auto px-10 py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-red hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95 active:translate-y-0">
               Enter
             </button>
             <button className="w-full sm:w-auto px-10 py-5 border-[4px] border-vintage-charcoal text-vintage-charcoal font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-charcoal hover:text-vintage-paper transition-all transform hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95 active:translate-y-0">
               About
             </button>
+            <a href="/free-cigarettes" className="w-full sm:w-auto px-10 py-5 bg-vintage-red text-white font-display text-xl tracking-[0.2em] uppercase hover:bg-red-800 transition-all transform hover:-translate-y-1 shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95 active:translate-y-0 text-center">
+              Free Cigarettes
+            </a>
           </div>
         </motion.div>
       </div>
@@ -63,15 +66,15 @@ export default function Hero() {
         >
           {/* Main gritty image placeholder */}
           <div className="absolute inset-0 bg-vintage-charcoal shadow-2xl overflow-hidden rounded-sm border-[12px] border-white transform rotate-2">
-            <img src="/images/jesse.png" alt="Community Member" className="w-full h-full object-cover grayscale mix-blend-luminosity contrast-150 brightness-75" />
+            <img src="/images/cats-collage.png" alt="Cats Collage" className="w-full h-full object-cover grayscale mix-blend-luminosity contrast-150 brightness-75" />
             
             {/* Color accent wash */}
             <div className="absolute inset-0 bg-vintage-red mix-blend-multiply opacity-20"></div>
             
             <div className="absolute bottom-8 left-8 right-8">
-               <h3 className="text-white font-display text-7xl leading-none drop-shadow-2xl">JESSE<br/>PINKMAN</h3>
+               <h3 className="text-white font-display text-7xl leading-none drop-shadow-2xl">THE<br/>CREW</h3>
                <p className="text-white/80 font-serif italic text-sm mt-2 max-w-[250px]">
-                 "A fictional character from the acclaimed series..."
+                 "Hanging out and keeping it real."
                </p>
             </div>
           </div>
