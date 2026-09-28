@@ -74,6 +74,25 @@ function SocialDiscovery() {
     fetchProfiles(myLocation?.lat, myLocation?.lng, filterBrand);
   };
 
+  const handleConnect = async (receiverId) => {
+    if (!user) return alert("You must sign in to connect.");
+    
+    const { error } = await supabase
+      .from('connections')
+      .insert({
+        sender_id: user.id,
+        receiver_id: receiverId,
+        status: 'pending'
+      });
+      
+    if (error) {
+       alert("Could not send request.");
+    } else {
+       alert("Connection request sent! They will see it in their Inbox.");
+       fetchProfiles(myLocation?.lat, myLocation?.lng, filterBrand);
+    }
+  };
+
   const fetchProfiles = async (lat, lng, brand) => {
     setLoading(true);
     let query = supabase.from('discovery_profiles').select('*');
@@ -86,6 +105,22 @@ function SocialDiscovery() {
     
     if (!error && data) {
       let filtered = data.filter(p => p.user_id !== user?.id); // exclude self
+      
+      // If user is logged in, exclude already connected/pending users
+      if (user) {
+        const { data: connections } = await supabase
+          .from('connections')
+          .select('*')
+          .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
+          
+        if (connections) {
+          const connectedUserIds = new Set();
+          connections.forEach(conn => {
+            connectedUserIds.add(conn.sender_id === user.id ? conn.receiver_id : conn.sender_id);
+          });
+          filtered = filtered.filter(p => !connectedUserIds.has(p.user_id));
+        }
+      }
       
       // If we have location, try to find nearby (< 50km)
       if (lat && lng) {
@@ -231,10 +266,10 @@ function SocialDiscovery() {
                   </div>
 
                   <div className="flex items-center gap-4 mt-auto pt-6 border-t-[4px] border-vintage-charcoal relative z-10">
-                    <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-vintage-charcoal text-vintage-paper hover:bg-vintage-red hover:text-white transition-all text-sm font-display tracking-[0.2em] uppercase focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
+                    <button onClick={() => alert("Chat requires a connection first! Connect with them to start chatting.")} className="flex-1 flex items-center justify-center gap-2 py-4 bg-vintage-charcoal text-vintage-paper hover:bg-vintage-red hover:text-white transition-all text-sm font-display tracking-[0.2em] uppercase focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95">
                       <MessageCircle className="w-4 h-4" /> CHAT
                     </button>
-                    <button onClick={() => alert("Direct messaging is coming soon!")} className="flex-1 flex items-center justify-center gap-2 py-4 border-[4px] border-vintage-charcoal text-vintage-charcoal hover:bg-vintage-charcoal hover:text-vintage-paper transition-all text-sm font-display tracking-[0.2em] uppercase focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95">
+                    <button onClick={() => handleConnect(p.user_id)} className="flex-1 flex items-center justify-center gap-2 py-4 border-[4px] border-vintage-charcoal text-vintage-charcoal hover:bg-vintage-charcoal hover:text-vintage-paper transition-all text-sm font-display tracking-[0.2em] uppercase focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95">
                       <UserPlus className="w-4 h-4" /> CONNECT
                     </button>
                   </div>

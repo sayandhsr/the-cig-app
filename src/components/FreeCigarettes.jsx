@@ -15,7 +15,11 @@ export default function FreeCigarettes() {
         </p>
         <div className="flex gap-6">
           <button 
-            onClick={() => setAgeVerified('yes')}
+            onClick={() => {
+              setAgeVerified('yes');
+              const audio = new Audio('/audio/laugh.mp3');
+              audio.play().catch(e => console.error("Audio playback failed:", e));
+            }}
             className="px-10 py-4 bg-vintage-charcoal text-white font-display text-2xl uppercase hover:bg-vintage-red transition-colors"
           >
             Yes, I am

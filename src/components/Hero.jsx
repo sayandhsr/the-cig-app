@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function Hero() {
+  const [showAbout, setShowAbout] = useState(false);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -44,10 +45,16 @@ export default function Hero() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 flex-wrap">
-            <button className="w-full sm:w-auto px-10 py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-red hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95 active:translate-y-0">
+            <button 
+              onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
+              className="w-full sm:w-auto px-10 py-5 bg-vintage-charcoal text-vintage-paper font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-red hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95 active:translate-y-0"
+            >
               Enter
             </button>
-            <button className="w-full sm:w-auto px-10 py-5 border-[4px] border-vintage-charcoal text-vintage-charcoal font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-charcoal hover:text-vintage-paper transition-all transform hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95 active:translate-y-0">
+            <button 
+              onClick={() => setShowAbout(true)}
+              className="w-full sm:w-auto px-10 py-5 border-[4px] border-vintage-charcoal text-vintage-charcoal font-display text-xl tracking-[0.2em] uppercase hover:bg-vintage-charcoal hover:text-vintage-paper transition-all transform hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-charcoal active:scale-95 active:translate-y-0"
+            >
               About
             </button>
             <a href="/free-cigarettes" className="w-full sm:w-auto px-10 py-5 bg-vintage-red text-white font-display text-xl tracking-[0.2em] uppercase hover:bg-red-800 transition-all transform hover:-translate-y-1 shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vintage-red active:scale-95 active:translate-y-0 text-center">
@@ -56,6 +63,32 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
+
+      {showAbout && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-vintage-paper p-8 md:p-12 max-w-2xl w-full border-4 border-vintage-charcoal relative"
+          >
+            <button 
+              onClick={() => setShowAbout(false)}
+              className="absolute top-4 right-4 text-3xl font-display hover:text-vintage-red transition-colors"
+            >
+              &times;
+            </button>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-vintage-charcoal uppercase mb-6">About Us</h2>
+            <p className="text-lg font-serif text-vintage-charcoal/80 mb-4 leading-relaxed">
+              We are the ultimate smoking community. A place to connect with others who appreciate the culture. 
+              No judgment, just real talk. Whether you're here for the debates, the anonymous spots, or just 
+              to hang out with the crew, you've found your place.
+            </p>
+            <p className="text-lg font-serif text-vintage-charcoal/80 leading-relaxed">
+              Enter the smoke, find your people, and enjoy the vibe. 
+            </p>
+          </motion.div>
+        </div>
+      )}
 
       <div className="w-full md:w-1/2 h-full flex items-center justify-center relative z-10 p-10 mt-12 md:mt-0">
         <motion.div 

@@ -98,8 +98,8 @@ export default function CommunityDirectory() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {profiles.filter(p => p.user_id !== user?.id).map((profile) => {
-            const status = getConnectionStatus(profile.user_id);
+          {profiles.filter(p => p.user_id !== user?.id && getConnectionStatus(p.user_id) === 'friends').map((profile) => {
+            const status = 'friends';
             return (
               <div key={profile.user_id} className="bg-vintage-paper border-[6px] border-vintage-charcoal p-6 shadow-[6px_6px_0px_0px_#1a1a1a] flex flex-col h-full">
                 <div className="flex gap-4 items-start mb-6">
@@ -163,9 +163,9 @@ export default function CommunityDirectory() {
               </div>
             );
           })}
-          {profiles.length <= 1 && (
+          {profiles.filter(p => p.user_id !== user?.id && getConnectionStatus(p.user_id) === 'friends').length === 0 && (
              <div className="col-span-full py-10 text-center font-serif text-xl italic text-vintage-paper/50">
-               No other users found in the dossier network yet.
+               No connections found in your network yet. Go to Discover to find people.
              </div>
           )}
         </div>

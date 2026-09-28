@@ -29,10 +29,21 @@ export default function InboxManager() {
       // Fetch all connections
       const { data: conns } = await supabase
         .from('connections')
-        .select('*')
+        .select(`
+          *,
+          direct_messages ( created_at )
+        `)
         .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
         
       if (conns) {
+        // Sort connections by latest message time
+        conns.forEach(c => {
+          c.latest_activity = c.direct_messages?.length 
+            ? Math.max(...c.direct_messages.map(m => new Date(m.created_at).getTime())) 
+            : new Date(c.created_at).getTime();
+        });
+        conns.sort((a, b) => b.latest_activity - a.latest_activity);
+        
         setConnections(conns);
         
         // Fetch profiles for all connected users
@@ -101,6 +112,15 @@ export default function InboxManager() {
     const text = newMessage;
     setNewMessage('');
     
+    setConnections(prev => {
+       const newConns = [...prev];
+       const idx = newConns.findIndex(c => c.id === activeChat);
+       if (idx !== -1) {
+          newConns[idx] = { ...newConns[idx], latest_activity: Date.now() };
+       }
+       return newConns.sort((a, b) => (b.latest_activity || 0) - (a.latest_activity || 0));
+    });
+
     await supabase.from('direct_messages').insert({
       connection_id: activeChat,
       sender_id: user.id,
