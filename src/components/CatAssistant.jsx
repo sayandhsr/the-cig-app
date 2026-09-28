@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
 const messages = [
   "Bro, even the algorithm needs a smoke.",
@@ -17,8 +17,12 @@ const messages = [
 export default function CatAssistant() {
   const [message, setMessage] = useState('');
   const [isVisible, setIsVisible] = useState(false);
+  const controls = useAnimation();
 
   useEffect(() => {
+    // Start at top-left
+    controls.set({ x: 20, y: 100 });
+
     const showRandomMessage = () => {
       const randomMsg = messages[Math.floor(Math.random() * messages.length)];
       setMessage(randomMsg);
@@ -35,19 +39,31 @@ export default function CatAssistant() {
       if (Math.random() > 0.3) {
         showRandomMessage();
       }
+      
+      // Occasionally "walk" around
+      if (Math.random() > 0.6) {
+         const newX = Math.max(20, Math.min(window.innerWidth - 150, Math.random() * window.innerWidth));
+         const newY = Math.max(20, Math.min(window.innerHeight - 150, Math.random() * window.innerHeight));
+         
+         controls.start({ 
+            x: newX, 
+            y: newY,
+            transition: { duration: 4, ease: "easeInOut" }
+         });
+      }
     }, 20000); // check every 20 seconds
 
     return () => {
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, []);
+  }, [controls]);
 
   return (
     <motion.div
       drag
       dragMomentum={false}
-      initial={{ x: 20, y: 100 }}
+      animate={controls}
       className="fixed z-[9999] cursor-grab active:cursor-grabbing flex flex-col items-center pointer-events-auto"
       style={{ touchAction: 'none' }}
     >
@@ -66,9 +82,25 @@ export default function CatAssistant() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="text-4xl drop-shadow-md select-none filter hover:brightness-110 transition-all">
-        🐱🚬
-      </div>
+      <motion.div 
+        animate={{ 
+           y: [0, -3, 0],
+           rotate: [-2, 2, -2]
+        }}
+        transition={{
+           repeat: Infinity,
+           duration: 4,
+           ease: "easeInOut"
+        }}
+        className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-2xl select-none"
+      >
+        <img 
+          src="/images/cat-sticker.png" 
+          alt="Smoking Cat Assistant" 
+          className="w-full h-full object-contain filter hover:brightness-110 transition-all pointer-events-none"
+          draggable={false}
+        />
+      </motion.div>
     </motion.div>
   );
 }
