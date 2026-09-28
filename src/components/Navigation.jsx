@@ -3,10 +3,12 @@ import { Menu, X } from 'lucide-react';
 import { UserButton, SignInButton } from '@clerk/astro/react';
 import { useStore } from '@nanostores/react';
 import { $userStore } from '@clerk/astro/client';
+import { supabase } from '../lib/supabase';
 
 function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const user = useStore($userStore);
 
   useEffect(() => {
@@ -16,6 +18,60 @@ function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    
+    let isMounted = true;
+    
+    const checkUnread = async () => {
+      const { data: conns } = await supabase
+        .from('connections')
+        .select(`id, direct_messages(created_at, sender_id)`)
+        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+        .eq('status', 'accepted');
+        
+      if (!conns) return;
+      
+      let count = 0;
+      conns.forEach(c => {
+         const lastRead = localStorage.getItem(`chat_read_${c.id}`);
+         const lastReadDate = lastRead ? new Date(lastRead).getTime() : 0;
+         
+         const unreadMsgs = c.direct_messages?.filter(m => 
+            m.sender_id !== user.id && new Date(m.created_at).getTime() > lastReadDate
+         );
+         
+         if (unreadMsgs && unreadMsgs.length > 0) {
+            count += unreadMsgs.length;
+         }
+      });
+      
+      if (isMounted) setUnreadCount(count);
+    };
+
+    checkUnread();
+    
+    const interval = setInterval(checkUnread, 10000);
+    
+    const sub = supabase.channel('global_dm_notifs')
+       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages' }, () => {
+           setTimeout(checkUnread, 500);
+       })
+       .subscribe();
+
+    const handleStorage = () => checkUnread();
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('chat_read_updated', handleStorage);
+
+    return () => {
+       isMounted = false;
+       clearInterval(interval);
+       supabase.removeChannel(sub);
+       window.removeEventListener('storage', handleStorage);
+       window.removeEventListener('chat_read_updated', handleStorage);
+    };
+  }, [user]);
 
   const navLinks = [
     { name: 'Spot Chat', href: '/spot-chat' },
@@ -40,9 +96,14 @@ function Navigation() {
             <a 
               key={link.name}
               href={link.href}
-              className="text-sm font-display tracking-[0.2em] uppercase transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red focus-visible:ring-offset-4 focus-visible:ring-offset-vintage-charcoal text-vintage-paper/80 hover:text-vintage-red active:scale-95"
+              className="relative text-sm font-display tracking-[0.2em] uppercase transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red focus-visible:ring-offset-4 focus-visible:ring-offset-vintage-charcoal text-vintage-paper/80 hover:text-vintage-red active:scale-95"
             >
               {link.name}
+              {link.name === 'Inbox' && unreadCount > 0 && (
+                <span className="absolute -top-3 -right-4 bg-vintage-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">
+                  {unreadCount}
+                </span>
+              )}
             </a>
           ))}
           
@@ -75,10 +136,15 @@ function Navigation() {
             <a 
               key={link.name}
               href={link.href}
-              className="text-2xl font-display tracking-[0.2em] uppercase text-vintage-paper py-4 border-b border-white/5 hover:text-vintage-red transition-colors active:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red px-2"
+              className="relative text-2xl font-display tracking-[0.2em] uppercase text-vintage-paper py-4 border-b border-white/5 hover:text-vintage-red transition-colors active:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vintage-red px-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.name}
+              {link.name === 'Inbox' && unreadCount > 0 && (
+                <span className="ml-4 inline-block bg-vintage-red text-white text-sm font-bold px-2 py-0.5 rounded-full animate-pulse align-middle">
+                  {unreadCount}
+                </span>
+              )}
             </a>
           ))}
           {!user ? (

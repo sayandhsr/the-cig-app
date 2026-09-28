@@ -31,7 +31,7 @@ export default function InboxManager() {
         .from('connections')
         .select(`
           *,
-          direct_messages ( created_at )
+          direct_messages ( created_at, sender_id )
         `)
         .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
         
@@ -80,7 +80,11 @@ export default function InboxManager() {
         .eq('connection_id', activeChat)
         .order('created_at', { ascending: true });
       if (data) setMessages(data);
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
+      // Update read status
+      localStorage.setItem(`chat_read_${activeChat}`, new Date().toISOString());
+      window.dispatchEvent(new Event('chat_read_updated'));
     };
     fetchMessages();
     
@@ -88,7 +92,11 @@ export default function InboxManager() {
       .channel(`dm_${activeChat}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages', filter: `connection_id=eq.${activeChat}` }, payload => {
         setMessages(prev => [...prev, payload.new]);
-        setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+        setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+        
+        // Update read status
+        localStorage.setItem(`chat_read_${activeChat}`, new Date().toISOString());
+        window.dispatchEvent(new Event('chat_read_updated'));
       })
       .subscribe();
       
@@ -126,6 +134,10 @@ export default function InboxManager() {
       sender_id: user.id,
       text
     });
+    
+    // Update read status since you just sent a message
+    localStorage.setItem(`chat_read_${activeChat}`, new Date().toISOString());
+    window.dispatchEvent(new Event('chat_read_updated'));
   };
 
   useEffect(() => {
@@ -181,18 +193,30 @@ export default function InboxManager() {
                   const otherId = c.sender_id === user.id ? c.receiver_id : c.sender_id;
                   const profile = profiles[otherId];
                   if (!profile) return null;
+                  
+                  // Compute unread for this connection
+                  const lastRead = typeof window !== 'undefined' ? localStorage.getItem(`chat_read_${c.id}`) : null;
+                  const lastReadDate = lastRead ? new Date(lastRead).getTime() : 0;
+                  const unreadMsgs = c.direct_messages?.filter(m => m.sender_id !== user.id && new Date(m.created_at).getTime() > lastReadDate);
+                  const unreadCount = unreadMsgs ? unreadMsgs.length : 0;
+
                   return (
                     <button 
                       key={c.id}
                       onClick={() => setActiveChat(c.id)}
-                      className={`flex items-center gap-3 p-3 border-[3px] transition-all text-left ${activeChat === c.id ? 'border-vintage-red bg-vintage-red/10' : 'border-transparent hover:border-vintage-charcoal/20'}`}
+                      className={`relative flex items-center gap-3 p-3 border-[3px] transition-all text-left ${activeChat === c.id ? 'border-vintage-red bg-vintage-red/10' : 'border-transparent hover:border-vintage-charcoal/20'}`}
                     >
-                      <div className="w-10 h-10 bg-vintage-charcoal flex items-center justify-center text-white font-display uppercase">
+                      <div className="w-10 h-10 bg-vintage-charcoal flex items-center justify-center text-white font-display uppercase shrink-0">
                         {profile.name.charAt(0)}
                       </div>
                       <div className="flex-grow overflow-hidden">
-                        <div className="font-display tracking-widest text-vintage-charcoal truncate">{profile.name}</div>
+                        <div className={`font-display tracking-widest truncate ${unreadCount > 0 ? 'text-vintage-red font-black' : 'text-vintage-charcoal'}`}>{profile.name}</div>
                       </div>
+                      {unreadCount > 0 && activeChat !== c.id && (
+                        <div className="shrink-0 bg-vintage-red text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                           {unreadCount}
+                        </div>
+                      )}
                     </button>
                   );
                 })

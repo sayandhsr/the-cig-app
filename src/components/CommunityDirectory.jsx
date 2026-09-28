@@ -112,7 +112,7 @@ export default function CommunityDirectory() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-display text-vintage-charcoal uppercase tracking-widest leading-none">{profile.name}</h3>
-                    <div className="text-xs font-sans text-vintage-red uppercase tracking-widest mt-1">{profile.gender || 'Unknown'} / {profile.age || '?'}</div>
+                    <div className="text-xs font-sans text-vintage-red uppercase tracking-widest mt-1">AGE: {profile.age || '?'}</div>
                   </div>
                 </div>
                 

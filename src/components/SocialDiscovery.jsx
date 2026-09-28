@@ -7,11 +7,12 @@ import { getDistance } from 'geolib';
 import { useStore } from '@nanostores/react';
 import { $userStore } from '@clerk/astro/client';
 
-function SocialDiscovery() {
+function SocialDiscovery({ isMainPage = false }) {
   const user = useStore($userStore);
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterBrand, setFilterBrand] = useState('');
+  const [hasMore, setHasMore] = useState(false);
   
   // User's own profile state
   const [myLocation, setMyLocation] = useState(null);
@@ -95,16 +96,33 @@ function SocialDiscovery() {
 
   const fetchProfiles = async (lat, lng, brand) => {
     setLoading(true);
-    let query = supabase.from('discovery_profiles').select('*');
+    // Fetch from user_profiles to get all registered users
+    let query = supabase.from('user_profiles').select('*').order('updated_at', { ascending: false });
     
-    if (brand) {
-      query = query.eq('brand', brand);
-    }
-
-    const { data, error } = await query.limit(50);
+    // In order to not break filter, we'd need discovery_profiles, but let's just ignore brand filter 
+    // or fetch discovery_profiles separately and merge.
+    // For simplicity, fetch all user_profiles, then fetch all discovery_profiles and merge.
+    const { data: usersData, error } = await query;
+    const { data: discData } = await supabase.from('discovery_profiles').select('*');
     
-    if (!error && data) {
-      let filtered = data.filter(p => p.user_id !== user?.id); // exclude self
+    if (!error && usersData) {
+      let merged = usersData.map(u => {
+        const d = discData?.find(dp => dp.user_id === u.user_id);
+        return {
+          ...u,
+          username: u.name || d?.username || 'Anonymous',
+          status: d?.status || u.bio || 'Chilling',
+          brand: d?.brand || u.interest || 'No Preference',
+          latitude: d?.latitude,
+          longitude: d?.longitude
+        };
+      });
+      
+      if (brand) {
+        merged = merged.filter(p => p.brand.toLowerCase() === brand.toLowerCase());
+      }
+      
+      let filtered = merged.filter(p => p.user_id !== user?.id); // exclude self
       
       // If user is logged in, exclude already connected/pending users
       if (user) {
@@ -122,31 +140,34 @@ function SocialDiscovery() {
         }
       }
       
-      // If we have location, try to find nearby (< 50km)
+      // If we have location, compute distance but don't strictly filter out people who aren't nearby 
+      // if we want to "show every person who created an account". 
+      // Wait, prompt says: "Do not limit Discover to a small number of users. Show all registered users available for discovery."
+      // So we will just compute distance to show it, and sort by it, but not filter out others!
       if (lat && lng) {
-        const nearby = filtered.filter(p => {
-          if (!p.latitude || !p.longitude) return false;
-          // Use geolib for accurate distance calculation
-          const distMeters = getDistance(
-            { latitude: lat, longitude: lng },
-            { latitude: p.latitude, longitude: p.longitude }
-          );
-          const distKm = distMeters / 1000;
-          p.distance = distKm;
-          return distKm <= 50;
+        filtered.forEach(p => {
+          if (p.latitude && p.longitude) {
+            const distMeters = getDistance(
+              { latitude: lat, longitude: lng },
+              { latitude: p.latitude, longitude: p.longitude }
+            );
+            p.distance = distMeters / 1000;
+          } else {
+             p.distance = 999999; // far away / global
+          }
         });
-        
-        if (nearby.length > 0) {
-          nearby.sort((a, b) => a.distance - b.distance);
-          setProfiles(nearby.slice(0, 9));
-          setLoading(false);
-          return;
-        }
+        filtered.sort((a, b) => a.distance - b.distance);
+      } else {
+        // If no location, sort by updated_at (already sorted from DB)
       }
       
-      // Fallback: Random assortment if no one is nearby or location is off
-      const shuffled = [...filtered].sort(() => 0.5 - Math.random());
-      setProfiles(shuffled.slice(0, 9));
+      if (isMainPage) {
+         setProfiles(filtered.slice(0, 3));
+         setHasMore(filtered.length > 3);
+      } else {
+         setProfiles(filtered);
+         setHasMore(false);
+      }
     }
     setLoading(false);
   };
@@ -276,6 +297,14 @@ function SocialDiscovery() {
                 </motion.div>
               ))
             )}
+          </div>
+        )}
+        
+        {isMainPage && hasMore && (
+          <div className="mt-12 text-center">
+             <a href="/discover" className="inline-block px-10 py-5 bg-vintage-red text-white font-display text-xl tracking-[0.2em] uppercase hover:bg-white hover:text-vintage-red transition-all border-[4px] border-transparent hover:border-vintage-red shadow-[4px_4px_0px_0px_#1a1a1a]">
+               VIEW ALL {'>'}
+             </a>
           </div>
         )}
       </div>

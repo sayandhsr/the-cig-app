@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Navigation from '../components/Navigation.jsx';
 import Footer from '../components/Footer.astro';
 import AgeGate from '../components/AgeGate.jsx';
+import CatAssistant from '../components/CatAssistant.jsx';
 
 const { title = "KILL SWITCH | SMOKE. CONNECT. TALK." } = Astro.props;
 ---
@@ -19,6 +20,7 @@ const { title = "KILL SWITCH | SMOKE. CONNECT. TALK." } = Astro.props;
 	</head>
 	<body class="relative bg-background">
 		<AgeGate client:only="react" />
+		<CatAssistant client:only="react" />
 		
 		<div id="main-content" class="opacity-0 transition-opacity duration-1000 flex flex-col min-h-screen">
 			<Navigation client:only="react" />

@@ -151,21 +151,6 @@ export default function ProfileForm() {
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-display text-vintage-red uppercase tracking-[0.2em]">Gender</label>
-          <select 
-            name="gender" value={formData.gender} onChange={handleChange}
-            className="w-full bg-transparent border-[4px] border-vintage-charcoal px-4 py-3 text-vintage-charcoal font-sans font-medium uppercase tracking-widest focus:outline-none focus:border-vintage-red appearance-none"
-          >
-            <option value="">SELECT...</option>
-            <option value="Male">MALE</option>
-            <option value="Female">FEMALE</option>
-            <option value="Non-Binary">NON-BINARY</option>
-            <option value="Other">OTHER</option>
-            <option value="Prefer not to say">PREFER NOT TO SAY</option>
-          </select>
-        </div>
-
-        <div className="space-y-2">
           <label className="text-xs font-display text-vintage-red uppercase tracking-[0.2em]">Interests</label>
           <input 
             type="text" name="interest" value={formData.interest} onChange={handleChange} placeholder="e.g. Cigars, Debates, Nightlife"

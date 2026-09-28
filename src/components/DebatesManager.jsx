@@ -124,8 +124,8 @@ function DebatesManager() {
     <div className="w-full">
       <div className="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
-          <h1 className="text-4xl font-display font-bold text-vintage-charcoal mb-2">Community Debates</h1>
-          <p className="text-vintage-charcoal/80">Discuss, debate, vote, and share your perspective.</p>
+          <h1 className="text-4xl font-display font-bold text-vintage-paper mb-2">Community Debates</h1>
+          <p className="text-vintage-paper/80">Discuss, debate, vote, and share your perspective.</p>
         </div>
         <button 
           onClick={() => setShowCreate(true)}
